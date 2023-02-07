@@ -1,9 +1,9 @@
 import os
 
-import gymnasium as gym
+import gym
 import numpy as np
 import torch
-from gym.spaces.box import Box
+from gym.spaces import Box
 from gym.wrappers.clip_action import ClipAction
 from stable_baselines3.common.atari_wrappers import (ClipRewardEnv,
                                                      EpisodicLifeEnv,
@@ -47,7 +47,7 @@ def make_env(env_id, seed, rank, log_dir, allow_early_resets):
             env = NoopResetEnv(env, noop_max=30)
             env = MaxAndSkipEnv(env, skip=4)
 
-        env.seed(seed + rank)
+        # env.seed(seed + rank)
 
         if str(env.__class__.__name__).find('TimeLimit') >= 0:
             env = TimeLimitMask(env)
@@ -117,7 +117,7 @@ def make_vec_envs(env_name,
 # Checks whether done was caused my timit limits or not
 class TimeLimitMask(gym.Wrapper):
     def step(self, action):
-        obs, rew, done, info = self.env.step(action)
+        obs, rew, done, info = self.env.step(int(action))
         if done and self.env._max_episode_steps == self.env._elapsed_steps:
             info['bad_transition'] = True
 

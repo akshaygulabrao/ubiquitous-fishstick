@@ -4,7 +4,7 @@ import os
 import time
 from collections import deque
 
-import gymnasium as gym
+import gym
 import numpy as np
 import torch
 import torch.nn as nn
